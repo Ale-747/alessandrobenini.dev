@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<script>
+  (function(){
+    try{
+      var t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    }catch(e){}
+  })();
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alessandro Benini — Sviluppatore Full-Stack Laravel / Vue</title>
+<meta name="description" content="Sviluppatore full-stack Laravel + Vue con sede a Bergamo. Costruisco applicazioni e gestionali su misura e mi inserisco come capacità extra in team già avviati.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light;
+    --paper:#F0F1EC;
+    --paper-dim:#E7E8E1;
+    --ink:#171B1A;
+    --muted:#666F67;
+    --line:#CCD0C6;
+    --signal:#2F6B4F;
+    --signal-dim:#E3ECE6;
+    --amber:#B5762A;
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'IBM Plex Sans', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+    --max:1080px;
+  }
+
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --paper:#14171A;
+    --paper-dim:#1B1F22;
+    --ink:#ECEEE9;
+    --muted:#8B948B;
+    --line:#2B302C;
+    --signal:#57A67D;
+    --signal-dim:#1C2E24;
+    --amber:#D08A3E;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:radial-gradient(var(--line) 0.6px, transparent 0.6px);
+    background-size:28px 28px;
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    transition:background-color 0.3s ease, color 0.3s ease;
+  }
+  @media (prefers-reduced-motion: reduce){ body{ transition:none; } }
+
+  a{ color:inherit; }
+  ::selection{ background:var(--signal); color:var(--paper); }
+
+  :focus-visible{
+    outline:2px solid var(--signal);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:var(--max);
+    margin:0 auto;
+    padding:0 clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--signal);
+  }
+
+  /* ---------- status bar ---------- */
+  .statusbar{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+    transition:background-color 0.3s ease, border-color 0.3s ease;
+  }
+  .statusbar .wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    min-height:56px;
+    gap:1rem;
+    flex-wrap:wrap;
+    padding-top:0.4rem;
+    padding-bottom:0.4rem;
+  }
+  .status-path{
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    color:var(--muted);
+  }
+  .status-path strong{ color:var(--ink); font-weight:500; }
+
+  nav.status-nav{ display:flex; gap:1.5rem; }
+  nav.status-nav a{
+    font-family:var(--font-mono);
+    font-size:0.8rem;
+    text-decoration:none;
+    color:var(--muted);
+    border-bottom:1px solid transparent;
+    padding-bottom:2px;
+    transition:color 0.15s ease, border-color 0.15s ease;
+  }
+  nav.status-nav a:hover{ color:var(--ink); border-color:var(--ink); }
+  @media (max-width:760px){ nav.status-nav{ display:none; } }
+
+  .controls{ display:flex; align-items:center; gap:1.1rem; flex-wrap:wrap; }
+
+  .lang-switch{
+    display:flex; align-items:center; gap:0.4rem;
+    font-family:var(--font-mono); font-size:0.78rem;
+  }
+  .lang-switch button{
+    background:none; border:none; padding:0; margin:0; cursor:pointer;
+    color:var(--muted); font-family:inherit; font-size:inherit;
+  }
+  .lang-switch button[aria-pressed="true"]{
+    color:var(--ink); text-decoration:underline; text-underline-offset:3px;
+  }
+  .lang-switch .sep{ color:var(--line); }
+
+  .theme-toggle{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    color:var(--muted);
+    background:none;
+    border:1px solid var(--line);
+    padding:0.35rem 0.6rem;
+    border-radius:2px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    transition:border-color 0.15s ease, color 0.15s ease;
+  }
+  .theme-toggle:hover{ border-color:var(--ink); color:var(--ink); }
+  .theme-toggle .swatch{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--ink);
+    flex:none;
+  }
+
+  .status-live{
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    font-family:var(--font-mono);
+    font-size:0.75rem;
+    letter-spacing:0.03em;
+    color:var(--signal);
+    white-space:nowrap;
+  }
+  .status-dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--signal);
+    position:relative;
+    flex:none;
+  }
+  .status-dot::after{
+    content:'';
+    position:absolute; inset:-5px;
+    border-radius:50%;
+    border:1px solid var(--signal);
+    animation:pulse 2.2s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{ transform:scale(0.5); opacity:0.9; }
+    100%{ transform:scale(2.1); opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){ .status-dot::after{ animation:none; } }
+  @media (max-width:480px){ .status-live .status-label{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{ padding:clamp(3rem, 8vw, 6rem) 0 clamp(2.5rem, 6vw, 4rem); }
+  .hero h1{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(2.2rem, 5.4vw, 3.9rem);
+    line-height:1.08;
+    letter-spacing:-0.01em;
+    margin:0.9rem 0 1.4rem;
+    max-width:16ch;
+  }
+  .hero p.lead{
+    font-size:clamp(1.05rem, 1.6vw, 1.2rem);
+    color:var(--muted);
+    max-width:52ch;
+    margin:0 0 2.4rem;
+  }
+  .hero-cta{ display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:clamp(2.5rem, 6vw, 4rem); }
+  .btn{
+    font-family:var(--font-mono);
+    font-size:0.85rem;
+    text-decoration:none;
+    padding:0.75rem 1.25rem;
+    border-radius:2px;
+    display:inline-block;
+    transition:transform 0.15s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .btn-primary{ background:var(--ink); color:var(--paper); }
+  .btn-primary:hover{ background:var(--signal); color:var(--paper); transform:translateY(-1px); }
+  .btn-ghost{ border:1px solid var(--line); color:var(--ink); }
+  .btn-ghost:hover{ border-color:var(--ink); transform:translateY(-1px); }
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    border-top:1px solid var(--line);
+    transition:border-color 0.3s ease;
+  }
+  .stat{
+    padding:1.3rem 1.2rem 1.3rem 0;
+    border-right:1px solid var(--line);
+    transition:border-color 0.3s ease;
+  }
+  .stat:last-child{ border-right:none; }
+  .stat .n{
+    font-family:var(--font-mono);
+    font-size:clamp(1.5rem, 3vw, 2.1rem);
+    color:var(--ink);
+    display:block;
+  }
+  .stat .l{
+    font-family:var(--font-mono);
+    font-size:0.7rem;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--muted);
+    display:block;
+    margin-top:0.35rem;
+  }
+  @media (max-width:720px){
+    .stats{ grid-template-columns:repeat(2, 1fr); }
+    .stat{ border-right:1px solid var(--line); padding-right:1rem; }
+    .stat:nth-child(2n){ border-right:none; }
+    .stat:nth-child(n+3){ border-top:1px solid var(--line); padding-top:1.1rem; }
+  }
+
+  /* ---------- section shell ---------- */
+  section{ padding:clamp(3rem, 7vw, 5rem) 0; border-top:1px solid var(--line); transition:border-color 0.3s ease; }
+  .section-head{ margin-bottom:clamp(2rem, 5vw, 3rem); }
+  .section-head h2{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(1.6rem, 3vw, 2.2rem);
+    margin:0.6rem 0 0;
+    letter-spacing:-0.01em;
+  }
+
+  .reveal{ opacity:0; transform:translateY(14px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* ---------- routes / servizi ---------- */
+  .routes{ border-top:1px solid var(--line); transition:border-color 0.3s ease; }
+  details.route{ border-bottom:1px solid var(--line); transition:border-color 0.3s ease; }
+  details.route summary{
+    list-style:none;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    padding:1.15rem 0;
+  }
+  details.route summary::-webkit-details-marker{ display:none; }
+  .method{
+    font-family:var(--font-mono);
+    font-size:0.75rem;
+    font-weight:500;
+    color:var(--signal);
+    background:var(--signal-dim);
+    padding:0.25rem 0.5rem;
+    border-radius:2px;
+    flex:none;
+    transition:background-color 0.3s ease, color 0.3s ease;
+  }
+  .path{
+    font-family:var(--font-mono);
+    font-size:clamp(0.95rem, 1.6vw, 1.05rem);
+    flex:1;
+  }
+  .chevron{
+    font-family:var(--font-mono);
+    color:var(--muted);
+    font-size:1.1rem;
+    transition:transform 0.2s ease;
+    flex:none;
+  }
+  details.route[open] .chevron{ transform:rotate(45deg); }
+  .route-body{
+    padding:0 0 1.4rem 0;
+    max-width:62ch;
+  }
+  .route-body p{ margin:0; color:var(--muted); }
+
+  /* ---------- changelog / progetti ---------- */
+  .changelog{ position:relative; }
+  .entry{
+    position:relative;
+    padding:0 0 clamp(2rem, 4vw, 2.6rem) 1.75rem;
+    border-left:1px solid var(--line);
+    transition:border-color 0.3s ease;
+  }
+  .entry:last-child{ padding-bottom:0; }
+  .entry::before{
+    content:'';
+    position:absolute;
+    left:-4.5px;
+    top:0.4rem;
+    width:8px; height:8px;
+    border-radius:50%;
+    background:var(--paper);
+    border:1.5px solid var(--signal);
+    transition:background-color 0.3s ease, border-color 0.3s ease;
+  }
+  .entry-meta{
+    display:flex;
+    align-items:baseline;
+    gap:0.75rem;
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    color:var(--muted);
+    margin-bottom:0.5rem;
+  }
+  .entry-meta .v{ color:var(--amber); font-weight:500; }
+  .entry h3{
+    font-family:var(--font-display);
+    font-size:clamp(1.15rem, 2vw, 1.4rem);
+    margin:0 0 0.6rem;
+    font-weight:600;
+  }
+  .entry p{ margin:0 0 0.9rem; max-width:62ch; color:var(--ink); }
+  .entry-tags{ display:flex; gap:0.5rem; flex-wrap:wrap; }
+  .entry-tags span{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    color:var(--muted);
+    border:1px solid var(--line);
+    padding:0.2rem 0.5rem;
+    border-radius:2px;
+    transition:border-color 0.3s ease;
+  }
+
+  /* ---------- stack ---------- */
+  .stackgrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:2.2rem;
+  }
+  .stackgroup .eyebrow{ margin-bottom:0.9rem; display:block; }
+  .stacktags{ display:flex; flex-wrap:wrap; gap:0.55rem; }
+  .stacktags span{
+    font-family:var(--font-mono);
+    font-size:0.82rem;
+    padding:0.4rem 0.65rem;
+    border:1px solid var(--line);
+    border-radius:2px;
+    background:var(--paper-dim);
+    transition:background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* ---------- chi sono ---------- */
+  .about{ display:grid; grid-template-columns:0.9fr 1.6fr; gap:clamp(2rem, 5vw, 4rem); }
+  .about-label{ font-family:var(--font-mono); font-size:0.8rem; color:var(--muted); line-height:1.6; }
+  .about-body p{ margin:0 0 1.1rem; max-width:60ch; }
+  .about-body p:last-child{ margin-bottom:0; }
+  @media (max-width:760px){ .about{ grid-template-columns:1fr; } }
+
+  /* ---------- contatti ---------- */
+  .contact-panel{
+    border:1px solid var(--line);
+    background:var(--paper-dim);
+    padding:clamp(1.6rem, 4vw, 2.4rem);
+    transition:background-color 0.3s ease, border-color 0.3s ease;
+  }
+  .contact-top{
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    padding-bottom:1.4rem;
+    border-bottom:1px solid var(--line);
+    margin-bottom:1.4rem;
+    flex-wrap:wrap;
+    transition:border-color 0.3s ease;
+  }
+  .contact-fields{ display:grid; grid-template-columns:repeat(2, 1fr); gap:1.4rem 2rem; }
+  @media (max-width:600px){ .contact-fields{ grid-template-columns:1fr; } }
+  .field-k{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    color:var(--muted);
+    display:block;
+    margin-bottom:0.4rem;
+  }
+  .field-v{ font-size:1.02rem; }
+  .field-v a{ text-decoration:none; border-bottom:1px solid var(--line); }
+  .field-v a:hover{ border-color:var(--ink); }
+  .contact-note{ margin-top:1.6rem; color:var(--muted); font-size:0.95rem; max-width:56ch; }
+
+  footer{ border-top:1px solid var(--line); padding:2rem 0; transition:border-color 0.3s ease; }
+  footer .wrap{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.75rem;
+    font-family:var(--font-mono); font-size:0.75rem; color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="statusbar">
+  <div class="wrap">
+    <span class="status-path">~/<strong>alessandro-benini</strong></span>
+    <nav class="status-nav">
+      <a href="#servizi" data-i18n="nav.servizi">Servizi</a>
+      <a href="#progetti" data-i18n="nav.progetti">Progetti</a>
+      <a href="#stack" data-i18n="nav.stack">Stack</a>
+      <a href="#chi-sono" data-i18n="nav.chisono">Chi sono</a>
+      <a href="#contatti" data-i18n="nav.contatti">Contatti</a>
+    </nav>
+    <div class="controls">
+      <div class="lang-switch" role="group" aria-label="Lingua / Language">
+        <button type="button" data-lang="it" aria-pressed="true">IT</button>
+        <span class="sep">/</span>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false">
+        <span class="swatch" aria-hidden="true"></span>
+        <span data-i18n="theme.toDark">Notte</span>
+      </button>
+      <span class="status-live"><span class="status-dot"></span><span class="status-label" data-i18n="status.available">Disponibile per collaborazioni</span></span>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow" data-i18n="hero.eyebrow">Sviluppatore full-stack — Laravel / Vue — Bergamo, IT</span>
+    <h1 data-i18n="hero.title">Capacità full-stack extra, quando il tuo team ne ha bisogno.</h1>
+    <p class="lead" data-i18n="hero.lead">Lavoro con agenzie, studi e altri sviluppatori come partner tecnico: prendo in carico moduli o interi progetti, dal database all'interfaccia, in piena autonomia.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#progetti" data-i18n="hero.cta1">Vedi i progetti</a>
+      <a class="btn btn-ghost" href="#contatti" data-i18n="hero.cta2">Parliamone</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="n">15</span><span class="l" data-i18n="stat.anni">Anni di codice</span></div>
+      <div class="stat"><span class="n">2</span><span class="l" data-i18n="stat.piva">Anni di P.IVA</span></div>
+      <div class="stat"><span class="n">250</span><span class="l" data-i18n="stat.utenti">Utenti picco in un torneo</span></div>
+      <div class="stat"><span class="n">5</span><span class="l" data-i18n="stat.filiali">Filiali su un gestionale</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section id="servizi">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="servizi.eyebrow">Servizi</span>
+        <h2 data-i18n="servizi.h2">Cosa puoi delegarmi</h2>
+      </div>
+      <div class="routes reveal">
+        <details class="route">
+          <summary><span class="method">GET</span><span class="path" data-i18n="route1.path">/sviluppo-full-stack</span><span class="chevron">+</span></summary>
+          <div class="route-body"><p data-i18n="route1.body">Applicazioni web complete in Laravel + Vue: backend, frontend, database e deploy. Dal primo commit alla produzione, senza passaggi di mano intermedi.</p></div>
+        </details>
+        <details class="route">
+          <summary><span class="method">GET</span><span class="path" data-i18n="route2.path">/gestionali-su-misura</span><span class="chevron">+</span></summary>
+          <div class="route-body"><p data-i18n="route2.body">Sistemi gestionali e contabili costruiti sulla logica reale del tuo business — non un template adattato. Scadenzari, statistiche, flussi di approvazione, tutto su misura.</p></div>
+        </details>
+        <details class="route">
+          <summary><span class="method">GET</span><span class="path" data-i18n="route3.path">/integrazione-ai</span><span class="chevron">+</span></summary>
+          <div class="route-body"><p data-i18n="route3.body">Integrazione di modelli AI, locali o via API, per automatizzare processi che oggi si fanno a mano: categorizzazione, estrazione dati, generazione di contenuti.</p></div>
+        </details>
+        <details class="route">
+          <summary><span class="method">GET</span><span class="path" data-i18n="route4.path">/capacita-extra</span><span class="chevron">+</span></summary>
+          <div class="route-body"><p data-i18n="route4.body">Mi inserisco in team già avviati per prendere in carico moduli specifici o interi progetti, seguendo gli stessi standard e strumenti già in uso.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="progetti">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="progetti.eyebrow">Progetti</span>
+        <h2 data-i18n="progetti.h2">Un changelog, non un portfolio</h2>
+      </div>
+      <div class="changelog">
+        <article class="entry reveal">
+          <div class="entry-meta"><span class="v">v3</span><span data-i18n="entry1.date">2024 — oggi</span></div>
+          <h3 data-i18n="entry1.title">DoctorGlass — gestionale multi-filiale</h3>
+          <p data-i18n="entry1.body">Costruito da zero: gestione contabile dei lavori per 5 filiali in franchising, attese di pagamento, calendario scadenze, premi aziendali per dipendente e globali, statistiche economiche e commerciali. Un vero gestionale, non un cruscotto.</p>
+          <div class="entry-tags"><span>Laravel</span><span>Vue</span><span>MySQL</span><span data-i18n="entry1.tag4">Da zero a produzione</span></div>
+        </article>
+        <article class="entry reveal">
+          <div class="entry-meta"><span class="v">v2</span><span data-i18n="entry2.date">2023</span></div>
+          <h3 data-i18n="entry2.title">opversus.gg — scoreboard tornei League of Legends</h3>
+          <p data-i18n="entry2.body">Sistema di scoreboard competitivo integrato via API Riot, all'interno di una piattaforma esistente per tornei esports. Utilizzato più volte, con un picco di 250 giocatori in competizione contemporanea.</p>
+          <div class="entry-tags"><span>Laravel</span><span>Vue</span><span>API Riot</span></div>
+        </article>
+        <article class="entry reveal">
+          <div class="entry-meta"><span class="v">v1</span><span data-i18n="entry3.date">In corso · progetto personale</span></div>
+          <h3 data-i18n="entry3.title">Aggregatore eventi con AI</h3>
+          <p data-i18n="entry3.body">Piattaforma in Laravel Zero che raccoglie e categorizza eventi usando Ollama e API AI per i problemi non risolvibili a regole fisse, poi genera in autonomia i contenuti multimediali da pubblicare.</p>
+          <div class="entry-tags"><span>Laravel Zero</span><span>Ollama</span><span data-i18n="entry3.tag3">Pipeline AI</span></div>
+        </article>
+        <article class="entry reveal">
+          <div class="entry-meta"><span class="v">+</span><span data-i18n="entry4.date">Varie</span></div>
+          <h3 data-i18n="entry4.title">Siti WordPress</h3>
+          <p data-i18n="entry4.body">Sviluppo e personalizzazione di siti WordPress per clienti diversi, da esigenze semplici a integrazioni su misura.</p>
+          <div class="entry-tags"><span>WordPress</span><span>PHP</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="stack.eyebrow">Stack</span>
+        <h2 data-i18n="stack.h2">Strumenti che uso davvero</h2>
+      </div>
+      <div class="stackgrid reveal">
+        <div class="stackgroup">
+          <span class="eyebrow">Backend</span>
+          <div class="stacktags"><span>PHP</span><span>Laravel</span><span>MySQL</span></div>
+        </div>
+        <div class="stackgroup">
+          <span class="eyebrow">Frontend</span>
+          <div class="stacktags"><span>Vue.js</span><span>JavaScript</span><span>SCSS</span><span>HTML5 / CSS3</span></div>
+        </div>
+        <div class="stackgroup">
+          <span class="eyebrow" data-i18n="stack.ai">AI & automazione</span>
+          <div class="stacktags"><span>Ollama</span><span>API AI</span><span>Python</span></div>
+        </div>
+        <div class="stackgroup">
+          <span class="eyebrow" data-i18n="stack.infra">Infrastruttura</span>
+          <div class="stacktags"><span>Git</span><span>DigitalOcean</span><span>Ubuntu Linux</span></div>
+        </div>
+        <div class="stackgroup">
+          <span class="eyebrow" data-i18n="stack.altro">Esplorati in progetti personali</span>
+          <div class="stacktags"><span>Java</span><span>C#</span><span>Go</span><span>Bash</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="chi-sono">
+    <div class="wrap">
+      <div class="about">
+        <div class="about-label reveal" data-i18n="about.label">Chi sono</div>
+        <div class="about-body reveal">
+          <p data-i18n="about.p1">Ho 26 anni e sono di Bergamo. Programmo dagli 11 anni — molto prima di sapere cosa fosse una partita IVA. Il liceo scientifico a indirizzo scienze applicate mi ha dato le basi tecniche; la laurea in International Politics, Law and Economics mi ha insegnato a leggere un problema prima di scrivere una riga di codice, cosa che si rivela utile ogni volta che il progetto è un gestionale e non un semplice sito.</p>
+          <p data-i18n="about.p2">Da quasi due anni ho la partita IVA e collaboro stabilmente con un duo di sviluppatori già avviato, oltre a seguire progetti in autonomia. Uso Linux ogni giorno, anche come sistema desktop, e nel tempo libero continuo a costruire progetti personali — di solito è lì che imparo le cose che poi porto nei progetti dei clienti.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contatti">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="contatti.eyebrow">Contatti</span>
+        <h2 data-i18n="contatti.h2">Cerco collaborazioni in Lombardia, anche da remoto</h2>
+      </div>
+      <div class="contact-panel reveal">
+        <div class="contact-top">
+          <span class="method">POST</span><span class="path" data-i18n="contatti.path">/contatti</span>
+        </div>
+        <div class="contact-fields">
+          <div>
+            <span class="field-k">Email</span>
+            <span class="field-v"><a href="mailto:beninialessandro8@gmail.com">beninialessandro8@gmail.com</a></span>
+          </div>
+          <div>
+            <span class="field-k" data-i18n="contatti.tel">Telefono / WhatsApp</span>
+            <span class="field-v"><a href="https://wa.me/393661980902">+39 366 198 0902</a></span>
+          </div>
+          <div>
+            <span class="field-k" data-i18n="contatti.piva">P.IVA</span>
+            <span class="field-v">04780390169</span>
+          </div>
+          <div>
+            <span class="field-k" data-i18n="contatti.base">Base</span>
+            <span class="field-v" data-i18n="contatti.baseval">Bergamo — disponibile su Lombardia e da remoto</span>
+          </div>
+        </div>
+        <p class="contact-note" data-i18n="contatti.note">Il primo confronto è senza impegno: raccontami il progetto o il tipo di supporto che ti serve, e ti dico onestamente se posso essere utile.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span data-i18n="footer.line">Alessandro Benini · P.IVA 04780390169 · Bergamo, IT</span>
+    <span id="year"></span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ---------- translations ----------
+  var translations = {
+    'nav.servizi': { it:'Servizi', en:'Services' },
+    'nav.progetti': { it:'Progetti', en:'Projects' },
+    'nav.stack': { it:'Stack', en:'Stack' },
+    'nav.chisono': { it:'Chi sono', en:'About' },
+    'nav.contatti': { it:'Contatti', en:'Contact' },
+    'theme.toDark': { it:'Notte', en:'Night' },
+    'theme.toLight': { it:'Giorno', en:'Day' },
+    'status.available': { it:'Disponibile per collaborazioni', en:'Available for collaborations' },
+    'hero.eyebrow': { it:'Sviluppatore full-stack — Laravel / Vue — Bergamo, IT', en:'Full-stack developer — Laravel / Vue — Bergamo, Italy' },
+    'hero.title': { it:'Capacità full-stack extra, quando il tuo team ne ha bisogno.', en:'Extra full-stack capacity, whenever your team needs it.' },
+    'hero.lead': { it:'Lavoro con agenzie, studi e altri sviluppatori come partner tecnico: prendo in carico moduli o interi progetti, dal database all\u2019interfaccia, in piena autonomia.', en:'I work with agencies, studios and other developers as a technical partner: I take on modules or entire projects, from the database to the interface, fully independently.' },
+    'hero.cta1': { it:'Vedi i progetti', en:'See the projects' },
+    'hero.cta2': { it:'Parliamone', en:'Get in touch' },
+    'stat.anni': { it:'Anni di codice', en:'Years of code' },
+    'stat.piva': { it:'Anni di P.IVA', en:'Years freelancing' },
+    'stat.utenti': { it:'Utenti picco in un torneo', en:'Peak users in a tournament' },
+    'stat.filiali': { it:'Filiali su un gestionale', en:'Branches on one system' },
+    'servizi.eyebrow': { it:'Servizi', en:'Services' },
+    'servizi.h2': { it:'Cosa puoi delegarmi', en:'What you can hand off to me' },
+    'route1.path': { it:'/sviluppo-full-stack', en:'/full-stack-development' },
+    'route1.body': { it:'Applicazioni web complete in Laravel + Vue: backend, frontend, database e deploy. Dal primo commit alla produzione, senza passaggi di mano intermedi.', en:'Complete web applications in Laravel + Vue: backend, frontend, database and deploy. From the first commit to production, with no hand-offs in between.' },
+    'route2.path': { it:'/gestionali-su-misura', en:'/custom-business-systems' },
+    'route2.body': { it:'Sistemi gestionali e contabili costruiti sulla logica reale del tuo business — non un template adattato. Scadenzari, statistiche, flussi di approvazione, tutto su misura.', en:'Management and accounting systems built around your business\u2019 real logic — not an adapted template. Deadlines, statistics, approval flows, all custom-built.' },
+    'route3.path': { it:'/integrazione-ai', en:'/ai-integration' },
+    'route3.body': { it:'Integrazione di modelli AI, locali o via API, per automatizzare processi che oggi si fanno a mano: categorizzazione, estrazione dati, generazione di contenuti.', en:'Integration of AI models, local or via API, to automate processes that are currently done by hand: categorization, data extraction, content generation.' },
+    'route4.path': { it:'/capacita-extra', en:'/extra-capacity' },
+    'route4.body': { it:'Mi inserisco in team già avviati per prendere in carico moduli specifici o interi progetti, seguendo gli stessi standard e strumenti già in uso.', en:'I join teams already in motion to take on specific modules or entire projects, following the standards and tools already in place.' },
+    'progetti.eyebrow': { it:'Progetti', en:'Projects' },
+    'progetti.h2': { it:'Un changelog, non un portfolio', en:'A changelog, not a portfolio' },
+    'entry1.date': { it:'2024 — oggi', en:'2024 — present' },
+    'entry1.title': { it:'DoctorGlass — gestionale multi-filiale', en:'DoctorGlass — multi-branch business system' },
+    'entry1.body': { it:'Costruito da zero: gestione contabile dei lavori per 5 filiali in franchising, attese di pagamento, calendario scadenze, premi aziendali per dipendente e globali, statistiche economiche e commerciali. Un vero gestionale, non un cruscotto.', en:'Built from scratch: job accounting for 5 franchise branches, payment tracking, deadline calendar, per-employee and company-wide bonus schemes, financial and sales statistics. A real business system, not a dashboard.' },
+    'entry1.tag4': { it:'Da zero a produzione', en:'Zero to production' },
+    'entry2.date': { it:'2023', en:'2023' },
+    'entry2.title': { it:'opversus.gg — scoreboard tornei League of Legends', en:'opversus.gg — League of Legends tournament scoreboard' },
+    'entry2.body': { it:'Sistema di scoreboard competitivo integrato via API Riot, all\u2019interno di una piattaforma esistente per tornei esports. Utilizzato più volte, con un picco di 250 giocatori in competizione contemporanea.', en:'Competitive scoreboard system integrated via the Riot API, inside an existing esports tournament platform. Used multiple times, with a peak of 250 players competing at once.' },
+    'entry3.date': { it:'In corso · progetto personale', en:'Ongoing · personal project' },
+    'entry3.title': { it:'Aggregatore eventi con AI', en:'AI-powered event aggregator' },
+    'entry3.body': { it:'Piattaforma in Laravel Zero che raccoglie e categorizza eventi usando Ollama e API AI per i problemi non risolvibili a regole fisse, poi genera in autonomia i contenuti multimediali da pubblicare.', en:'A Laravel Zero platform that collects and categorizes events using Ollama and AI APIs for problems that fixed rules can\u2019t solve, then generates the media content to publish on its own.' },
+    'entry3.tag3': { it:'Pipeline AI', en:'AI pipeline' },
+    'entry4.date': { it:'Varie', en:'Various' },
+    'entry4.title': { it:'Siti WordPress', en:'WordPress sites' },
+    'entry4.body': { it:'Sviluppo e personalizzazione di siti WordPress per clienti diversi, da esigenze semplici a integrazioni su misura.', en:'Development and customization of WordPress sites for different clients, from simple needs to custom integrations.' },
+    'stack.eyebrow': { it:'Stack', en:'Stack' },
+    'stack.h2': { it:'Strumenti che uso davvero', en:'Tools I actually use' },
+    'stack.ai': { it:'AI & automazione', en:'AI & automation' },
+    'stack.infra': { it:'Infrastruttura', en:'Infrastructure' },
+    'stack.altro': { it:'Esplorati in progetti personali', en:'Explored in personal projects' },
+    'about.label': { it:'Chi sono', en:'About' },
+    'about.p1': { it:'Ho 26 anni e sono di Bergamo. Programmo dagli 11 anni — molto prima di sapere cosa fosse una partita IVA. Il liceo scientifico a indirizzo scienze applicate mi ha dato le basi tecniche; la laurea in International Politics, Law and Economics mi ha insegnato a leggere un problema prima di scrivere una riga di codice, cosa che si rivela utile ogni volta che il progetto è un gestionale e non un semplice sito.', en:'I\u2019m 26 and based in Bergamo. I\u2019ve been programming since I was 11 — long before I knew what a VAT number was. Scientific high school gave me the technical foundations; a degree in International Politics, Law and Economics taught me to read a problem before writing a line of code, which turns out to matter every time the project is a business system rather than a simple website.' },
+    'about.p2': { it:'Da quasi due anni ho la partita IVA e collaboro stabilmente con un duo di sviluppatori già avviato, oltre a seguire progetti in autonomia. Uso Linux ogni giorno, anche come sistema desktop, e nel tempo libero continuo a costruire progetti personali — di solito è lì che imparo le cose che poi porto nei progetti dei clienti.', en:'I\u2019ve been self-employed for almost two years now, working steadily with an established two-person dev team alongside projects I run on my own. I use Linux every day, including as my desktop system, and in my free time I keep building personal projects — usually where I learn the things I later bring into client work.' },
+    'contatti.eyebrow': { it:'Contatti', en:'Contact' },
+    'contatti.h2': { it:'Cerco collaborazioni in Lombardia, anche da remoto', en:'Looking for collaborations across Lombardy, remote welcome' },
+    'contatti.path': { it:'/contatti', en:'/contact' },
+    'contatti.tel': { it:'Telefono / WhatsApp', en:'Phone / WhatsApp' },
+    'contatti.piva': { it:'P.IVA', en:'VAT number' },
+    'contatti.base': { it:'Base', en:'Location' },
+    'contatti.baseval': { it:'Bergamo — disponibile su Lombardia e da remoto', en:'Bergamo — available across Lombardy and remote' },
+    'contatti.note': { it:'Il primo confronto è senza impegno: raccontami il progetto o il tipo di supporto che ti serve, e ti dico onestamente se posso essere utile.', en:'The first conversation is no-obligation: tell me about the project or the kind of support you need, and I\u2019ll tell you honestly whether I can help.' },
+    'footer.line': { it:'Alessandro Benini · P.IVA 04780390169 · Bergamo, IT', en:'Alessandro Benini · VAT IT04780390169 · Bergamo, Italy' }
+  };
+
+  var currentLang = 'it';
+  var langButtons = document.querySelectorAll('.lang-switch button');
+  var themeToggle = document.getElementById('themeToggle');
+
+  function applyLang(lang){
+    currentLang = lang;
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      var entry = translations[key];
+      if (entry && entry[lang] !== undefined && key !== 'theme.toDark' && key !== 'theme.toLight') {
+        el.textContent = entry[lang];
+      }
+    });
+    langButtons.forEach(function(b){
+      b.setAttribute('aria-pressed', b.getAttribute('data-lang') === lang ? 'true' : 'false');
+    });
+    updateThemeLabel();
+  }
+
+  langButtons.forEach(function(b){
+    b.addEventListener('click', function(){ applyLang(b.getAttribute('data-lang')); });
+  });
+
+  // ---------- theme ----------
+  function currentTheme(){
+    return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+  }
+
+  function updateThemeLabel(){
+    var label = themeToggle.querySelector('[data-i18n]');
+    var key = currentTheme() === 'dark' ? 'theme.toLight' : 'theme.toDark';
+    label.setAttribute('data-i18n', key);
+    label.textContent = translations[key][currentLang];
+    themeToggle.setAttribute('aria-pressed', currentTheme() === 'dark' ? 'true' : 'false');
+  }
+
+  themeToggle.addEventListener('click', function(){
+    var next = currentTheme() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    updateThemeLabel();
+  });
+
+  updateThemeLabel();
+
+  // ---------- scroll reveal ----------
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var revealEls = document.querySelectorAll('.reveal');
+
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealEls.forEach(function(el){ el.classList.add('in-view'); });
+  } else {
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function(el){ obs.observe(el); });
+  }
+</script>
+
+</body>
+</html>
