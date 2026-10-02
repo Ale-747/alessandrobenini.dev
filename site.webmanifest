@@ -1,0 +1,16 @@
+{
+  "name": "Alessandro Benini — Sviluppatore Full-Stack",
+  "short_name": "A. Benini",
+  "description": "Sviluppatore full-stack Laravel + Vue con sede a Bergamo.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "lang": "it",
+  "background_color": "#171B1A",
+  "theme_color": "#171B1A",
+  "icons": [
+    { "src": "/favicon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon-512x512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

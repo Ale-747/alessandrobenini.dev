@@ -1,0 +1,62 @@
+# Alessandro Benini
+
+> Sviluppatore full-stack Laravel + Vue con sede a Bergamo (Italia). Lavoro come
+> partner tecnico di agenzie, studi e altri sviluppatori: prendo in carico moduli
+> specifici o interi progetti, dal database all'interfaccia, in piena autonomia.
+
+Sito: https://alessandrobenini.dev/ (singola pagina, contenuti in italiano e inglese)
+Email: beninialessandro8@gmail.com
+Telefono / WhatsApp: +39 366 198 0902
+P.IVA: 04780390169
+Base: Bergamo — disponibile in Lombardia e da remoto
+Stato: disponibile per collaborazioni
+
+## Servizi
+
+- **Sviluppo full-stack**: applicazioni web complete in Laravel + Vue — backend,
+  frontend, database e deploy, dal primo commit alla produzione.
+- **Gestionali su misura**: software di gestione aziendale (contabilità lavori,
+  scadenze, premi, statistiche) costruiti sul processo reale del cliente.
+- **Integrazione AI**: modelli locali (Ollama) o via API per automatizzare
+  categorizzazione, estrazione dati e generazione di contenuti.
+- **Capacità extra per team**: inserimento in team già avviati, con gli stessi
+  standard e strumenti già in uso.
+
+## Progetti
+
+- **Gestionale multi-filiale per una rete in franchising** (2025 — oggi):
+  costruito da zero per il gestore di 5 centri in franchising. Contabilità dei
+  lavori, attese di pagamento, calendario scadenze, premi per dipendente e
+  globali, statistiche economiche e commerciali. Laravel, Vue, MySQL.
+- **opversus.gg — scoreboard tornei League of Legends** (2024 — 2025): sistema di
+  scoreboard competitivo integrato via API Riot dentro una piattaforma esports
+  esistente; picco di 250 giocatori in competizione contemporanea. Laravel, Vue.
+- **Aggregatore eventi con AI** (in corso, progetto personale): piattaforma in
+  Laravel Zero che raccoglie e categorizza eventi con Ollama e API AI, poi genera
+  in autonomia i contenuti multimediali da pubblicare.
+- **Siti WordPress** (vari): sviluppo e personalizzazione per clienti diversi,
+  da esigenze semplici a integrazioni su misura.
+
+## Stack
+
+- Backend: PHP, Laravel, MySQL
+- Frontend: Vue.js, JavaScript, SCSS, HTML5 / CSS3
+- AI e automazione: Ollama, API AI, Python
+- Infrastruttura: Git, DigitalOcean, Ubuntu Linux
+- Esplorati in progetti personali: Java, C#, Go, Bash
+
+## Chi sono
+
+26 anni, di Bergamo. Programmo dagli 11 anni. Liceo scientifico a indirizzo
+scienze applicate, poi laurea in International Politics, Law and Economics —
+utile per leggere un problema prima di scrivere codice, soprattutto quando il
+progetto è un gestionale e non un semplice sito. Partita IVA da quasi due anni,
+collaborazione stabile con un duo di sviluppatori già avviato oltre a progetti
+in autonomia. Linux ogni giorno, anche come desktop.
+
+## Contatti
+
+- Email: <mailto:beninialessandro8@gmail.com>
+- WhatsApp: <https://wa.me/393661980902>
+
+Il primo confronto è senza impegno.
